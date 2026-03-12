@@ -46,25 +46,26 @@ export default function Step10_AI({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">AIツールの活用状況についてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* 質問1：活用状況 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             活用状況 <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {AI_STATUSES.map(s => (
               <button
                 key={s.value}
                 onClick={() => setFormData({ ...formData, aiStatus: s.value })}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.aiStatus === s.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.aiStatus === s.value ? { background: '#1E4D8C' } : {}}
               >
-                {s.label}
+                {formData.aiStatus === s.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{s.label}</span>
               </button>
             ))}
           </div>
@@ -73,22 +74,23 @@ export default function Step10_AI({ data, onNext, onBack }: Props) {
         {/* 質問2：利用中のAIサービス（活用中の場合） */}
         {showServices && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               利用中のAIサービス（複数選択可） <span className="text-red-500">*</span>
             </label>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-1 gap-3">
               {AI_SERVICES.map(service => (
                 <button
                   key={service}
                   onClick={() => toggleService(service)}
-                  className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                     formData.aiServices.includes(service)
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.aiServices.includes(service) ? { background: '#1E4D8C' } : {}}
                 >
-                  {service}
+                  {formData.aiServices.includes(service) && <span className="text-white">✓</span>}
+                  <span className="flex-1">{service}</span>
                 </button>
               ))}
             </div>

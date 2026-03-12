@@ -62,25 +62,26 @@ export default function Step07_Backup({ data, onNext, onBack }: Props) {
         <p className="text-red-600 text-xs mt-2">※近年ランサムウェア被害が急増しています。バックアップ体制の確認は非常に重要です。</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: バックアップを実施していますか */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             バックアップを実施していますか？
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {BACKUP_STATUSES.map(status => (
               <button
                 key={status}
                 onClick={() => setFormData({ ...formData, backupStatus: status })}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.backupStatus === status
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.backupStatus === status ? { background: '#1E4D8C' } : {}}
               >
-                {status}
+                {formData.backupStatus === status && <span className="text-white">✓</span>}
+                <span className="flex-1">{status}</span>
               </button>
             ))}
           </div>
@@ -89,22 +90,23 @@ export default function Step07_Backup({ data, onNext, onBack }: Props) {
         {/* Q2: バックアップ方法 */}
         {showDetails && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               バックアップ方法（複数選択可）
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {BACKUP_METHODS.map(method => (
                 <button
                   key={method}
                   onClick={() => toggleMethod(method)}
-                  className={`px-4 py-3 rounded-lg border transition-all ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                     formData.backupMethod.includes(method)
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.backupMethod.includes(method) ? { background: '#1E4D8C' } : {}}
                 >
-                  {method}
+                  {formData.backupMethod.includes(method) && <span className="text-white">✓</span>}
+                  <span className="flex-1">{method}</span>
                 </button>
               ))}
             </div>
@@ -114,22 +116,23 @@ export default function Step07_Backup({ data, onNext, onBack }: Props) {
         {/* Q3: バックアップ頻度 */}
         {showDetails && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               バックアップ頻度
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {BACKUP_FREQUENCIES.map(freq => (
                 <button
                   key={freq}
                   onClick={() => setFormData({ ...formData, backupFrequency: freq })}
-                  className={`px-5 py-3 rounded-lg border transition-all ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                     formData.backupFrequency === freq
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.backupFrequency === freq ? { background: '#1E4D8C' } : {}}
                 >
-                  {freq}
+                  {formData.backupFrequency === freq && <span className="text-white">✓</span>}
+                  <span className="flex-1">{freq}</span>
                 </button>
               ))}
             </div>
@@ -139,22 +142,23 @@ export default function Step07_Backup({ data, onNext, onBack }: Props) {
         {/* Q4: 復元テスト */}
         {showDetails && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               復元テストを実施したことがありますか？
             </label>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-1 gap-3">
               {RESTORE_TESTS.map(test => (
                 <button
                   key={test}
                   onClick={() => setFormData({ ...formData, backupRestoreTest: test })}
-                  className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                     formData.backupRestoreTest === test
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.backupRestoreTest === test ? { background: '#1E4D8C' } : {}}
                 >
-                  {test}
+                  {formData.backupRestoreTest === test && <span className="text-white">✓</span>}
+                  <span className="flex-1">{test}</span>
                 </button>
               ))}
             </div>
@@ -163,22 +167,23 @@ export default function Step07_Backup({ data, onNext, onBack }: Props) {
 
         {/* Q5: 管理・担当会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             管理・担当会社（任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, backupVendor: v.value, backupVendorOther: v.value !== 'other' ? '' : formData.backupVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.backupVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.backupVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.backupVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>

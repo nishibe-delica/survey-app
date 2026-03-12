@@ -46,25 +46,26 @@ export default function Step13_ITStaff({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">社内のIT管理体制についてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 社内のIT担当者 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             社内のIT担当者は？
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {STAFF_STATUSES.map(status => (
               <button
                 key={status}
                 onClick={() => setFormData({ ...formData, itStaffStatus: status })}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.itStaffStatus === status
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.itStaffStatus === status ? { background: '#1E4D8C' } : {}}
               >
-                {status}
+                {formData.itStaffStatus === status && <span className="text-white">✓</span>}
+                <span className="flex-1">{status}</span>
               </button>
             ))}
           </div>
@@ -72,22 +73,23 @@ export default function Step13_ITStaff({ data, onNext, onBack }: Props) {
 
         {/* Q2: IT管理のアウトソース状況 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             IT管理のアウトソース状況（任意）
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {OUTSOURCE_STATUSES.map(status => (
               <button
                 key={status}
                 onClick={() => setFormData({ ...formData, itOutsource: status })}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.itOutsource === status
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.itOutsource === status ? { background: '#1E4D8C' } : {}}
               >
-                {status}
+                {formData.itOutsource === status && <span className="text-white">✓</span>}
+                <span className="flex-1">{status}</span>
               </button>
             ))}
           </div>
@@ -95,22 +97,23 @@ export default function Step13_ITStaff({ data, onNext, onBack }: Props) {
 
         {/* Q3: ITに関する相談先 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             ITに関する相談先（任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {CONSULTATIONS.map(c => (
               <button
                 key={c.value}
                 onClick={() => setFormData({ ...formData, itConsultation: c.value, itConsultationOther: c.value !== 'other' ? '' : formData.itConsultationOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.itConsultation === c.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.itConsultation === c.value ? { background: '#1E4D8C' } : {}}
               >
-                {c.label}
+                {formData.itConsultation === c.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{c.label}</span>
               </button>
             ))}
           </div>

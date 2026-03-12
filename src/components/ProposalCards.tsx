@@ -47,7 +47,7 @@ export default function ProposalCards({ surveyData, onRestart }: Props) {
                       </h3>
                       <p className="text-gray-700 mb-3">{proposal.description}</p>
                       <div className="inline-block px-3 py-1 rounded-full text-sm font-medium" style={{ background: colors.border, color: 'white' }}>
-                        {proposal.urgency === 'high' && '⚠️'} {proposal.urgency === 'medium' && '📋'} {proposal.urgency === 'low' && '💡'} {proposal.urgencyLabel}
+                        {proposal.urgencyColor === 'red' && '⚠️'} {proposal.urgencyColor === 'orange' && '📋'} {proposal.urgencyColor === 'blue' && '💡'} {proposal.urgencyLabel}
                       </div>
                     </div>
                   </div>

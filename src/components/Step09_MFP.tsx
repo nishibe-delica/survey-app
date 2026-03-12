@@ -45,25 +45,26 @@ export default function Step08_MFP({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">コピー機・複合機・プリンターについてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* 質問1：メーカー */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             メーカー（複数選択可） <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {MFP_MAKERS.map(maker => (
               <button
                 key={maker}
                 onClick={() => toggleMaker(maker)}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.mfpMakers.includes(maker)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.mfpMakers.includes(maker) ? { background: '#1E4D8C' } : {}}
               >
-                {maker}
+                {formData.mfpMakers.includes(maker) && <span className="text-white">✓</span>}
+                <span className="flex-1">{maker}</span>
               </button>
             ))}
           </div>
@@ -71,22 +72,23 @@ export default function Step08_MFP({ data, onNext, onBack }: Props) {
 
         {/* 質問2：管理・導入会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             管理・導入会社 <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, mfpVendor: v.value, mfpVendorOther: v.value !== 'other' ? '' : formData.mfpVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.mfpVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.mfpVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.mfpVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>
@@ -107,22 +109,23 @@ export default function Step08_MFP({ data, onNext, onBack }: Props) {
 
         {/* 質問3：次回リプレイス時期 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             次回リプレイス時期の目安 <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {REPLACE_TIMES.map(time => (
               <button
                 key={time}
                 onClick={() => setFormData({ ...formData, mfpReplaceTime: time })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.mfpReplaceTime === time
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.mfpReplaceTime === time ? { background: '#1E4D8C' } : {}}
               >
-                {time}
+                {formData.mfpReplaceTime === time && <span className="text-white">✓</span>}
+                <span className="flex-1">{time}</span>
               </button>
             ))}
           </div>

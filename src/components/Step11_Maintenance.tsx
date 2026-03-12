@@ -58,25 +58,26 @@ export default function Step11_Maintenance({ data, onNext, onBack }: Props) {
         <p className="text-red-600 text-xs mt-2">※保守サポートが切れた機器はトラブル時に修理できない場合があります</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 現在の保守サポート契約状況 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             現在の保守サポート契約状況
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {MAINTENANCE_STATUSES.map(status => (
               <button
                 key={status}
                 onClick={() => setFormData({ ...formData, maintenanceStatus: status })}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.maintenanceStatus === status
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.maintenanceStatus === status ? { background: '#1E4D8C' } : {}}
               >
-                {status}
+                {formData.maintenanceStatus === status && <span className="text-white">✓</span>}
+                <span className="flex-1">{status}</span>
               </button>
             ))}
           </div>
@@ -84,22 +85,23 @@ export default function Step11_Maintenance({ data, onNext, onBack }: Props) {
 
         {/* Q2: 保守サポートが切れている機器 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             保守サポートが切れている（または不明な）機器・システム（複数選択可・任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {EXPIRED_ITEMS.map(item => (
               <button
                 key={item}
                 onClick={() => toggleExpired(item)}
-                className={`px-4 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.maintenanceExpired.includes(item)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.maintenanceExpired.includes(item) ? { background: '#1E4D8C' } : {}}
               >
-                {item}
+                {formData.maintenanceExpired.includes(item) && <span className="text-white">✓</span>}
+                <span className="flex-1">{item}</span>
               </button>
             ))}
           </div>
@@ -107,22 +109,23 @@ export default function Step11_Maintenance({ data, onNext, onBack }: Props) {
 
         {/* Q3: IT機器・システムの相談先 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             IT機器・システムの相談先（任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, maintenanceVendor: v.value, maintenanceVendorOther: v.value !== 'other' ? '' : formData.maintenanceVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.maintenanceVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.maintenanceVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.maintenanceVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>

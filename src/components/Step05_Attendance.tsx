@@ -45,25 +45,26 @@ export default function Step05_Attendance({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">出退勤・勤務時間の管理方法についてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 現在の勤怠管理方法 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             現在の勤怠管理方法は？
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {ATTENDANCE_METHODS.map(method => (
               <button
                 key={method}
                 onClick={() => setFormData({ ...formData, attendanceMethod: method })}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.attendanceMethod === method
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.attendanceMethod === method ? { background: '#1E4D8C' } : {}}
               >
-                {method}
+                {formData.attendanceMethod === method && <span className="text-white">✓</span>}
+                <span className="flex-1">{method}</span>
               </button>
             ))}
           </div>
@@ -72,7 +73,7 @@ export default function Step05_Attendance({ data, onNext, onBack }: Props) {
         {/* Q2: 利用中のシステム名 */}
         {showSystemName && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               利用中のシステム名（任意）
             </label>
             <input
@@ -88,22 +89,23 @@ export default function Step05_Attendance({ data, onNext, onBack }: Props) {
         {/* Q3: 導入・管理会社 */}
         {showVendor && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               導入・管理会社
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {VENDORS.map(v => (
                 <button
                   key={v.value}
                   onClick={() => setFormData({ ...formData, attendanceVendor: v.value, attendanceVendorOther: v.value !== 'other' ? '' : formData.attendanceVendorOther })}
-                  className={`px-5 py-3 rounded-lg border transition-all ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                     formData.attendanceVendor === v.value
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.attendanceVendor === v.value ? { background: '#1E4D8C' } : {}}
                 >
-                  {v.label}
+                  {formData.attendanceVendor === v.value && <span className="text-white">✓</span>}
+                  <span className="flex-1">{v.label}</span>
                 </button>
               ))}
             </div>

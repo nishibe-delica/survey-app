@@ -70,20 +70,20 @@ export default function Step17_Complete({ onViewSummary, onRestart }: Props) {
         </div>
 
         {/* ボタン */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           <button
             onClick={onViewSummary}
-            className="w-full py-4 bg-white rounded-xl font-bold text-lg shadow-lg hover:bg-blue-50 transition-colors"
+            className="w-full py-5 bg-white rounded-xl font-bold text-xl shadow-lg hover:bg-blue-50 transition-colors"
             style={{ color: '#1E4D8C' }}
           >
-            📊 IT環境サマリーを見る
+            📊 IT環境サマリーを見る　→
           </button>
 
           <button
             onClick={onRestart}
-            className="w-full py-3 bg-white bg-opacity-20 text-white rounded-xl hover:bg-opacity-30 transition-colors"
+            className="w-full py-3 bg-transparent text-white rounded-xl hover:bg-white hover:bg-opacity-10 transition-colors text-base"
           >
-            最初に戻る
+            🏠 最初に戻る
           </button>
         </div>
       </div>

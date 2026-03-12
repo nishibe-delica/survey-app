@@ -50,25 +50,26 @@ export default function Step02_PC({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">パソコンやタブレットの導入状況をお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 主なメーカー */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             主なメーカーは？（複数選択可）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {PC_MAKERS.map(maker => (
               <button
                 key={maker}
                 onClick={() => setFormData({ ...formData, pcMaker: maker })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.pcMaker === maker
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.pcMaker === maker ? { background: '#1E4D8C' } : {}}
               >
-                {maker}
+                {formData.pcMaker === maker && <span className="text-white">✓</span>}
+                <span className="flex-1">{maker}</span>
               </button>
             ))}
           </div>
@@ -89,22 +90,23 @@ export default function Step02_PC({ data, onNext, onBack }: Props) {
 
         {/* Q2: 購入先・管理会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             購入先・管理会社は？
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, pcVendor: v.value, pcVendorOther: v.value !== 'other' ? '' : formData.pcVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.pcVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.pcVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.pcVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>
@@ -125,44 +127,46 @@ export default function Step02_PC({ data, onNext, onBack }: Props) {
 
         {/* Q3: 契約形態 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             契約形態は？
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {CONTRACTS.map(contract => (
               <button
                 key={contract}
                 onClick={() => setFormData({ ...formData, pcContract: contract })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.pcContract === contract
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.pcContract === contract ? { background: '#1E4D8C' } : {}}
               >
-                {contract}
+                {formData.pcContract === contract && <span className="text-white">✓</span>}
+                <span className="flex-1">{contract}</span>
               </button>
             ))}
           </div>
 
           {formData.pcContract === 'リース' && (
             <div className="mt-3 animate-fadeIn">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-[17px] font-bold text-gray-700 mb-3">
                 リース満了時期（目安）
               </label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {LEASE_ENDS.map(end => (
                   <button
                     key={end}
                     onClick={() => setFormData({ ...formData, pcLeaseEnd: end })}
-                    className={`px-5 py-3 rounded-lg border transition-all ${
+                    className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                       formData.pcLeaseEnd === end
                         ? 'border-transparent text-white font-semibold'
                         : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                     }`}
                     style={formData.pcLeaseEnd === end ? { background: '#1E4D8C' } : {}}
                   >
-                    {end}
+                    {formData.pcLeaseEnd === end && <span className="text-white">✓</span>}
+                    <span className="flex-1">{end}</span>
                   </button>
                 ))}
               </div>
@@ -172,22 +176,23 @@ export default function Step02_PC({ data, onNext, onBack }: Props) {
 
         {/* Q4: 台数規模 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             台数規模（概算）（任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {PC_COUNTS.map(count => (
               <button
                 key={count}
                 onClick={() => setFormData({ ...formData, pcCount: count })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.pcCount === count
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.pcCount === count ? { background: '#1E4D8C' } : {}}
               >
-                {count}
+                {formData.pcCount === count && <span className="text-white">✓</span>}
+                <span className="flex-1">{count}</span>
               </button>
             ))}
           </div>
@@ -195,22 +200,23 @@ export default function Step02_PC({ data, onNext, onBack }: Props) {
 
         {/* Q5: 端末の種類 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             端末の種類（複数選択可・任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {PC_TYPES.map(type => (
               <button
                 key={type}
                 onClick={() => toggleType(type)}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.pcTypes.includes(type)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.pcTypes.includes(type) ? { background: '#1E4D8C' } : {}}
               >
-                {type}
+                {formData.pcTypes.includes(type) && <span className="text-white">✓</span>}
+                <span className="flex-1">{type}</span>
               </button>
             ))}
           </div>

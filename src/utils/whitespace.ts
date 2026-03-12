@@ -1,4 +1,4 @@
-import { SurveyData, WhitespaceItem, WhitespaceStatus } from '../types/survey';
+import type { SurveyData, WhitespaceItem, WhitespaceStatus } from '../types/survey';
 
 function getStatus(vendor: string, status?: string): WhitespaceStatus {
   if (vendor === 'suiteq') return 'suiteq';
@@ -88,7 +88,7 @@ export function calcWhitespace(data: Partial<SurveyData>): WhitespaceItem[] {
       status: getStatus(data.maintenanceVendor || '', data.maintenanceStatus === '契約なし' ? '未導入' : ''),
       competitorName: data.maintenanceVendorOther,
       proposalMessage: '包括的な保守サポートをご提供します',
-      urgency: data.maintenanceExpired?.length > 0 ? 'high' : data.maintenanceStatus === '契約なし' ? 'high' : 'none',
+      urgency: (data.maintenanceExpired?.length ?? 0) > 0 ? 'high' : data.maintenanceStatus === '契約なし' ? 'high' : 'none',
     },
     {
       category: 'AI活用',

@@ -52,10 +52,10 @@ export default function Step11_Issues({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">ITに関するお困りごとや今後の計画をお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* 質問1：現在のITで最も困っていること */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             現在のITで最も困っていることは？（任意）
           </label>
           <textarea
@@ -68,22 +68,23 @@ export default function Step11_Issues({ data, onNext, onBack }: Props) {
 
         {/* 質問2：1年以内に検討しているIT項目 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             1年以内に検討しているIT項目（複数選択可・任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {CONSIDERING_ITEMS.map(item => (
               <button
                 key={item}
                 onClick={() => toggleItem(item)}
-                className={`px-4 py-3 rounded-lg border transition-all text-sm ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.consideringItems.includes(item)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.consideringItems.includes(item) ? { background: '#1E4D8C' } : {}}
               >
-                {item}
+                {formData.consideringItems.includes(item) && <span className="text-white">✓</span>}
+                <span className="flex-1">{item}</span>
               </button>
             ))}
           </div>
@@ -91,7 +92,7 @@ export default function Step11_Issues({ data, onNext, onBack }: Props) {
 
         {/* 質問3：AIで実現したいこと */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             AIで実現したいことは？（任意）
           </label>
           <textarea
@@ -104,22 +105,23 @@ export default function Step11_Issues({ data, onNext, onBack }: Props) {
 
         {/* 質問4：IT投資の年間予算感 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             IT投資の年間予算感（任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {IT_BUDGETS.map(budget => (
               <button
                 key={budget}
                 onClick={() => setFormData({ ...formData, itBudget: budget })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.itBudget === budget
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.itBudget === budget ? { background: '#1E4D8C' } : {}}
               >
-                {budget}
+                {formData.itBudget === budget && <span className="text-white">✓</span>}
+                <span className="flex-1">{budget}</span>
               </button>
             ))}
           </div>

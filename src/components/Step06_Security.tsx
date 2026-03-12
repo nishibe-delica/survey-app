@@ -47,25 +47,26 @@ export default function Step06_Security({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">情報セキュリティ対策の状況についてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 現在の対策状況 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             現在の対策状況（複数選択可）
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {SECURITY_ITEMS.map(item => (
               <button
                 key={item}
                 onClick={() => toggleStatus(item)}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.securityStatus.includes(item)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.securityStatus.includes(item) ? { background: '#1E4D8C' } : {}}
               >
-                {item}
+                {formData.securityStatus.includes(item) && <span className="text-white">✓</span>}
+                <span className="flex-1">{item}</span>
               </button>
             ))}
           </div>
@@ -74,22 +75,23 @@ export default function Step06_Security({ data, onNext, onBack }: Props) {
         {/* Q2: ライセンス本数 */}
         {showLicense && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               ウイルス対策ソフトのライセンス本数（任意）
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {LICENSE_COUNTS.map(count => (
                 <button
                   key={count}
                   onClick={() => setFormData({ ...formData, securityLicenseCount: count })}
-                  className={`px-5 py-3 rounded-lg border transition-all ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                     formData.securityLicenseCount === count
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.securityLicenseCount === count ? { background: '#1E4D8C' } : {}}
                 >
-                  {count}
+                  {formData.securityLicenseCount === count && <span className="text-white">✓</span>}
+                  <span className="flex-1">{count}</span>
                 </button>
               ))}
             </div>
@@ -98,22 +100,23 @@ export default function Step06_Security({ data, onNext, onBack }: Props) {
 
         {/* Q3: 最後にセキュリティ診断を受けた時期 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             最後にセキュリティ診断を受けた時期（任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {LAST_CHECKS.map(check => (
               <button
                 key={check}
                 onClick={() => setFormData({ ...formData, securityLastCheck: check })}
-                className={`px-4 py-3 rounded-lg border transition-all text-sm ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.securityLastCheck === check
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.securityLastCheck === check ? { background: '#1E4D8C' } : {}}
               >
-                {check}
+                {formData.securityLastCheck === check && <span className="text-white">✓</span>}
+                <span className="flex-1">{check}</span>
               </button>
             ))}
           </div>
@@ -121,22 +124,23 @@ export default function Step06_Security({ data, onNext, onBack }: Props) {
 
         {/* Q4: 管理・導入会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             管理・導入会社
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, securityVendor: v.value, securityVendorOther: v.value !== 'other' ? '' : formData.securityVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.securityVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.securityVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.securityVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>

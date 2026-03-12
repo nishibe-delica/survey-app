@@ -43,25 +43,26 @@ export default function Step09_Phone({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">会社の電話環境についてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* 質問1：現在の電話環境 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             現在の電話環境 <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {PHONE_ENVS.map(env => (
               <button
                 key={env}
                 onClick={() => setFormData({ ...formData, phoneEnv: env })}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.phoneEnv === env
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.phoneEnv === env ? { background: '#1E4D8C' } : {}}
               >
-                {env}
+                {formData.phoneEnv === env && <span className="text-white">✓</span>}
+                <span className="flex-1">{env}</span>
               </button>
             ))}
           </div>
@@ -69,22 +70,23 @@ export default function Step09_Phone({ data, onNext, onBack }: Props) {
 
         {/* 質問2：管理・導入会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             管理・導入会社 <span className="text-red-500">*</span>
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, phoneVendor: v.value, phoneVendorOther: v.value !== 'other' ? '' : formData.phoneVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-lg flex items-center gap-2 ${
                   formData.phoneVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.phoneVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.phoneVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>

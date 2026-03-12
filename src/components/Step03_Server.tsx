@@ -50,25 +50,26 @@ export default function Step03_Server({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">データ管理・サーバー環境についてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 現在の環境 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             現在の環境（複数選択可）
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {SERVER_ENVS.map(env => (
               <button
                 key={env}
                 onClick={() => toggleEnv(env)}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.serverEnv.includes(env)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.serverEnv.includes(env) ? { background: '#1E4D8C' } : {}}
               >
-                {env}
+                {formData.serverEnv.includes(env) && <span className="text-white">✓</span>}
+                <span className="flex-1">{env}</span>
               </button>
             ))}
           </div>
@@ -76,22 +77,23 @@ export default function Step03_Server({ data, onNext, onBack }: Props) {
 
         {/* Q2: 主な用途 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             主な用途（複数選択可・任意）
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {SERVER_USAGES.map(usage => (
               <button
                 key={usage}
                 onClick={() => toggleUsage(usage)}
-                className={`px-4 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.serverUsage.includes(usage)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.serverUsage.includes(usage) ? { background: '#1E4D8C' } : {}}
               >
-                {usage}
+                {formData.serverUsage.includes(usage) && <span className="text-white">✓</span>}
+                <span className="flex-1">{usage}</span>
               </button>
             ))}
           </div>
@@ -99,22 +101,23 @@ export default function Step03_Server({ data, onNext, onBack }: Props) {
 
         {/* Q3: 管理・導入会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             管理・導入会社
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, serverVendor: v.value, serverVendorOther: v.value !== 'other' ? '' : formData.serverVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.serverVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.serverVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.serverVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>

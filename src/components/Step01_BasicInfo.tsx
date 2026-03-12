@@ -12,7 +12,12 @@ const SCALES = ['〜9名', '10〜29名', '30〜99名', '100名以上']
 const YEARS = ['1年未満', '1〜3年', '3〜10年', '10年以上']
 
 const inputClass = 'w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-const labelClass = 'block text-sm font-semibold text-gray-700 mb-1.5'
+const labelClass = 'block text-[17px] font-bold text-gray-700 mb-3'
+const buttonClass = (selected: boolean) => `min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
+  selected
+    ? 'border-transparent text-white font-semibold'
+    : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
+}`
 
 export default function Step01_BasicInfo({ data, onNext, onBack }: Props) {
   const [formData, setFormData] = useState({
@@ -32,7 +37,7 @@ export default function Step01_BasicInfo({ data, onNext, onBack }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* タイトル */}
       <div className="text-center">
         <div className="text-4xl mb-2">🏢</div>
@@ -40,7 +45,7 @@ export default function Step01_BasicInfo({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">お客様の基本情報をご入力ください</p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-8">
         {/* 会社名 */}
         <div>
           <label className={labelClass}>会社名</label>
@@ -59,19 +64,16 @@ export default function Step01_BasicInfo({ data, onNext, onBack }: Props) {
         {/* 従業員規模 */}
         <div>
           <label className={labelClass}>従業員規模</label>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {SCALES.map(v => (
               <button
                 key={v}
                 onClick={() => set('employeeSize', v)}
-                className={`px-5 py-3 rounded-lg border transition-all ${
-                  formData.employeeSize === v
-                    ? 'border-transparent text-white font-semibold'
-                    : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
-                }`}
+                className={buttonClass(formData.employeeSize === v)}
                 style={formData.employeeSize === v ? { background: '#1E4D8C' } : {}}
               >
-                {v}
+                {formData.employeeSize === v && <span className="text-white">✓</span>}
+                <span className="flex-1">{v}</span>
               </button>
             ))}
           </div>
@@ -98,19 +100,16 @@ export default function Step01_BasicInfo({ data, onNext, onBack }: Props) {
         {/* お付き合い年数 */}
         <div>
           <label className={labelClass}>スイテックとのお付き合い年数</label>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {YEARS.map(v => (
               <button
                 key={v}
                 onClick={() => set('relationshipYears', v)}
-                className={`px-5 py-3 rounded-lg border transition-all ${
-                  formData.relationshipYears === v
-                    ? 'border-transparent text-white font-semibold'
-                    : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
-                }`}
+                className={buttonClass(formData.relationshipYears === v)}
                 style={formData.relationshipYears === v ? { background: '#1E4D8C' } : {}}
               >
-                {v}
+                {formData.relationshipYears === v && <span className="text-white">✓</span>}
+                <span className="flex-1">{v}</span>
               </button>
             ))}
           </div>

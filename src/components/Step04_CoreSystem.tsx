@@ -55,25 +55,26 @@ export default function Step04_CoreSystem({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">受注・販売・会計など業務の中核となるシステムについてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 導入状況 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             導入状況
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-3">
             {STATUSES.map(s => (
               <button
                 key={s.value}
                 onClick={() => setFormData({ ...formData, coreSystemStatus: s.value })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.coreSystemStatus === s.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.coreSystemStatus === s.value ? { background: '#1E4D8C' } : {}}
               >
-                {s.label}
+                {formData.coreSystemStatus === s.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{s.label}</span>
               </button>
             ))}
           </div>
@@ -82,22 +83,23 @@ export default function Step04_CoreSystem({ data, onNext, onBack }: Props) {
         {/* Q2: 利用中のシステム種類 */}
         {showDetails && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               利用中のシステム種類（複数選択可）
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {SYSTEM_TYPES.map(type => (
                 <button
                   key={type}
                   onClick={() => toggleType(type)}
-                  className={`px-4 py-3 rounded-lg border transition-all text-left ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                     formData.coreSystemTypes.includes(type)
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.coreSystemTypes.includes(type) ? { background: '#1E4D8C' } : {}}
                 >
-                  {type}
+                  {formData.coreSystemTypes.includes(type) && <span className="text-white">✓</span>}
+                  <span className="flex-1">{type}</span>
                 </button>
               ))}
             </div>
@@ -107,7 +109,7 @@ export default function Step04_CoreSystem({ data, onNext, onBack }: Props) {
         {/* Q3: システム名 */}
         {showDetails && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               システム名（任意）
             </label>
             <input
@@ -123,22 +125,23 @@ export default function Step04_CoreSystem({ data, onNext, onBack }: Props) {
         {/* Q4: システムの種類 */}
         {showDetails && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               システムの種類
             </label>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-1 gap-3">
               {CLOUD_TYPES.map(type => (
                 <button
                   key={type}
                   onClick={() => setFormData({ ...formData, coreSystemCloud: type })}
-                  className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                     formData.coreSystemCloud === type
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.coreSystemCloud === type ? { background: '#1E4D8C' } : {}}
                 >
-                  {type}
+                  {formData.coreSystemCloud === type && <span className="text-white">✓</span>}
+                  <span className="flex-1">{type}</span>
                 </button>
               ))}
             </div>
@@ -148,22 +151,23 @@ export default function Step04_CoreSystem({ data, onNext, onBack }: Props) {
         {/* Q5: 導入からの年数 */}
         {showDetails && (
           <div className="animate-fadeIn">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-[17px] font-bold text-gray-700 mb-3">
               導入からの年数
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {AGES.map(age => (
                 <button
                   key={age}
                   onClick={() => setFormData({ ...formData, coreSystemAge: age })}
-                  className={`px-5 py-3 rounded-lg border transition-all ${
+                  className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                     formData.coreSystemAge === age
                       ? 'border-transparent text-white font-semibold'
                       : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                   }`}
                   style={formData.coreSystemAge === age ? { background: '#1E4D8C' } : {}}
                 >
-                  {age}
+                  {formData.coreSystemAge === age && <span className="text-white">✓</span>}
+                  <span className="flex-1">{age}</span>
                 </button>
               ))}
             </div>
@@ -172,22 +176,23 @@ export default function Step04_CoreSystem({ data, onNext, onBack }: Props) {
 
         {/* Q6: 導入・管理会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             導入・管理会社
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, coreSystemVendor: v.value, coreSystemVendorOther: v.value !== 'other' ? '' : formData.coreSystemVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.coreSystemVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.coreSystemVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.coreSystemVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>

@@ -35,32 +35,33 @@ export default function Step08_Network({ data, onNext, onBack }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="text-center">
         <div className="text-4xl mb-2">🌐</div>
         <h2 className="text-2xl font-bold" style={{ color: '#1E4D8C' }}>回線・ネットワーク</h2>
         <p className="text-gray-500 text-sm mt-1">インターネット回線・社内ネットワークについてお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Q1: 回線の種類 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             回線の種類（複数選択可）
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {NETWORK_TYPES.map(type => (
               <button
                 key={type}
                 onClick={() => toggleType(type)}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.networkTypes.includes(type)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.networkTypes.includes(type) ? { background: '#1E4D8C' } : {}}
               >
-                {type}
+                {formData.networkTypes.includes(type) && <span className="text-white">✓</span>}
+                <span className="flex-1">{type}</span>
               </button>
             ))}
           </div>
@@ -81,22 +82,23 @@ export default function Step08_Network({ data, onNext, onBack }: Props) {
 
         {/* Q2: 管理・導入会社 */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             管理・導入会社
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             {VENDORS.map(v => (
               <button
                 key={v.value}
                 onClick={() => setFormData({ ...formData, networkVendor: v.value, networkVendorOther: v.value !== 'other' ? '' : formData.networkVendorOther })}
-                className={`px-5 py-3 rounded-lg border transition-all ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.networkVendor === v.value
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.networkVendor === v.value ? { background: '#1E4D8C' } : {}}
               >
-                {v.label}
+                {formData.networkVendor === v.value && <span className="text-white">✓</span>}
+                <span className="flex-1">{v.label}</span>
               </button>
             ))}
           </div>

@@ -124,10 +124,16 @@ export default function App() {
             <div className="text-white font-bold text-base leading-tight">スイテック ITアンケート</div>
             <div className="text-blue-200 text-xs">創業40周年記念</div>
           </div>
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-3">
             <span className="text-xs px-2 py-1 rounded-full font-medium bg-amber-400 text-amber-900">
               💼 同行
             </span>
+            <button
+              onClick={handleRestart}
+              className="text-white text-sm hover:text-blue-200 transition-colors flex items-center gap-1"
+            >
+              🏠 ホーム
+            </button>
           </div>
         </div>
       </header>
@@ -136,8 +142,8 @@ export default function App() {
       {currentStep <= 17 && <StepIndicator current={currentStep} total={17} />}
 
       {/* メインコンテンツ */}
-      <main className="max-w-2xl mx-auto px-4 py-6">
-        <div className="bg-white rounded-2xl shadow-sm p-6">
+      <main className="max-w-[720px] mx-auto px-4 py-6">
+        <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 md:p-8">
           {currentStep === 1 && <Step01_BasicInfo data={surveyData} onNext={handleNext} onBack={handleBack} />}
           {currentStep === 2 && <Step02_PC data={surveyData} onNext={handleNext} onBack={handleBack} />}
           {currentStep === 3 && <Step03_Server data={surveyData} onNext={handleNext} onBack={handleBack} />}

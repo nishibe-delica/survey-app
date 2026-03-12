@@ -17,9 +17,8 @@ const EXPECTATIONS = [
   'その他'
 ]
 
-export default function Step12_Expectation({ data, onNext, onBack }: Props) {
+export default function Step15_Expectation({ data, onNext, onBack }: Props) {
   const [formData, setFormData] = useState({
-    nps: data.nps ?? 8,
     expectations: data.expectations || []
   })
 
@@ -30,10 +29,8 @@ export default function Step12_Expectation({ data, onNext, onBack }: Props) {
     setFormData({ ...formData, expectations: newExps })
   }
 
-  const canNext = true // NPSは必須、期待は任意
-
   const handleNext = () => {
-    if (canNext) onNext(formData)
+    onNext(formData)
   }
 
   return (
@@ -44,56 +41,26 @@ export default function Step12_Expectation({ data, onNext, onBack }: Props) {
         <p className="text-gray-500 text-sm mt-1">創業40周年を迎えたスイテックへのご意見・ご期待をお聞かせください</p>
       </div>
 
-      <div className="space-y-6">
-        {/* 質問1：NPS */}
+      <div className="space-y-8">
+        {/* 今後期待すること */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-3">
-            スイテックを知人・同業者にお勧めする可能性は？ <span className="text-red-500">*</span>
-          </label>
-
-          {/* 現在値を大きく表示 */}
-          <div className="text-center mb-4">
-            <div className="text-5xl font-bold" style={{ color: '#1E4D8C' }}>{formData.nps}</div>
-          </div>
-
-          {/* スライダー */}
-          <input
-            type="range"
-            min="0"
-            max="10"
-            value={formData.nps}
-            onChange={e => setFormData({ ...formData, nps: parseInt(e.target.value) })}
-            className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-            style={{
-              background: `linear-gradient(to right, #1E4D8C 0%, #1E4D8C ${formData.nps * 10}%, #e5e7eb ${formData.nps * 10}%, #e5e7eb 100%)`
-            }}
-          />
-
-          {/* ラベル */}
-          <div className="flex justify-between text-sm text-gray-600 mt-2">
-            <span>0 勧めない</span>
-            <span>10 ぜひ勧めたい</span>
-          </div>
-        </div>
-
-        {/* 質問2：今後期待すること */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-[17px] font-bold text-gray-700 mb-3">
             スイテックに今後期待すること（複数選択可・任意）
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-3">
             {EXPECTATIONS.map(exp => (
               <button
                 key={exp}
                 onClick={() => toggleExpectation(exp)}
-                className={`px-5 py-3 rounded-lg border transition-all text-left ${
+                className={`min-h-[60px] px-5 py-4 rounded-lg border transition-all text-left text-lg flex items-center gap-2 ${
                   formData.expectations.includes(exp)
                     ? 'border-transparent text-white font-semibold'
                     : 'border-gray-300 text-gray-700 bg-white hover:border-blue-300'
                 }`}
                 style={formData.expectations.includes(exp) ? { background: '#1E4D8C' } : {}}
               >
-                {exp}
+                {formData.expectations.includes(exp) && <span className="text-white">✓</span>}
+                <span className="flex-1">{exp}</span>
               </button>
             ))}
           </div>
@@ -116,27 +83,6 @@ export default function Step12_Expectation({ data, onNext, onBack }: Props) {
           次へ →
         </button>
       </div>
-
-      <style>{`
-        .slider::-webkit-slider-thumb {
-          appearance: none;
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          background: #1E4D8C;
-          cursor: pointer;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .slider::-moz-range-thumb {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          background: #1E4D8C;
-          cursor: pointer;
-          border: none;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-      `}</style>
     </div>
   )
 }

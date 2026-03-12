@@ -1,4 +1,4 @@
-import { WhitespaceItem, ProposalCard } from '../types/survey';
+import type { WhitespaceItem, ProposalCard } from '../types/survey';
 
 export function generateProposals(items: WhitespaceItem[]): ProposalCard[] {
   const proposals: ProposalCard[] = [];
