@@ -1,3 +1,11 @@
+// === 認証ユーザー型 ===
+export interface AuthUser {
+  id: string;
+  email: string;          // GWSメールアドレス（@delicasuito.com）
+  name: string;           // 表示名（Googleアカウント名）
+  avatarUrl: string | null; // プロフィール画像URL
+}
+
 export type Screen =
   | 'modeSelect'
   | 'adminLogin'
