@@ -1,8 +1,11 @@
-interface Props {
-  onLogout: () => void
+import type { AuthUser } from '../types/survey';
+
+interface AdminDashboardProps {
+  user: AuthUser;
+  onBack: () => void;
 }
 
-export default function AdminDashboard({ onLogout }: Props) {
+export default function AdminDashboard({ onBack }: AdminDashboardProps) {
   // ダミーデータ
   const totalResponses = 12
   const salesReps = [
@@ -27,10 +30,10 @@ export default function AdminDashboard({ onLogout }: Props) {
             <p className="text-blue-200 text-sm">ITアンケート 回答状況</p>
           </div>
           <button
-            onClick={onLogout}
+            onClick={onBack}
             className="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2"
           >
-            ← ログアウト
+            ← 戻る
           </button>
         </div>
       </header>

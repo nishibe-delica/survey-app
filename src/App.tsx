@@ -1,84 +1,134 @@
-import { useState } from 'react'
-import type { SurveyData, Screen } from './types/survey'
-import ModeSelect from './components/ModeSelect'
-import AdminLogin from './components/AdminLogin'
-import AdminDashboard from './components/AdminDashboard'
-import StepIndicator from './components/StepIndicator'
-import Step01_BasicInfo from './components/Step01_BasicInfo'
-import Step02_PC from './components/Step02_PC'
-import Step03_Server from './components/Step03_Server'
-import Step04_CoreSystem from './components/Step04_CoreSystem'
-import Step05_Attendance from './components/Step05_Attendance'
-import Step06_Security from './components/Step06_Security'
-import Step07_Backup from './components/Step07_Backup'
-import Step08_Network from './components/Step08_Network'
-import Step09_MFP from './components/Step09_MFP'
-import Step10_Phone from './components/Step10_Phone'
-import Step11_Maintenance from './components/Step11_Maintenance'
-import Step12_AI from './components/Step12_AI'
-import Step13_ITStaff from './components/Step13_ITStaff'
-import Step14_Issues from './components/Step14_Issues'
-import Step15_Expectation from './components/Step15_Expectation'
-import Step16_Video from './components/Step16_Video'
-import Step17_Complete from './components/Step17_Complete'
-import ResultSummary from './components/ResultSummary'
-import WhitespaceMap from './components/WhitespaceMap'
-import ProposalCards from './components/ProposalCards'
+import { useState, useEffect } from 'react';
+import { useAuth } from './hooks/useAuth';
+import type { SurveyData, Screen } from './types/survey';
+import ModeSelect from './components/ModeSelect';
+import AuthLogin from './components/AuthLogin';
+import AdminDashboard from './components/AdminDashboard';
+import StepIndicator from './components/StepIndicator';
+import Step01_BasicInfo from './components/Step01_BasicInfo';
+import Step02_PC from './components/Step02_PC';
+import Step03_Server from './components/Step03_Server';
+import Step04_CoreSystem from './components/Step04_CoreSystem';
+import Step05_Attendance from './components/Step05_Attendance';
+import Step06_Security from './components/Step06_Security';
+import Step07_Backup from './components/Step07_Backup';
+import Step08_Network from './components/Step08_Network';
+import Step09_MFP from './components/Step09_MFP';
+import Step10_Phone from './components/Step10_Phone';
+import Step11_Maintenance from './components/Step11_Maintenance';
+import Step12_AI from './components/Step12_AI';
+import Step13_ITStaff from './components/Step13_ITStaff';
+import Step14_Issues from './components/Step14_Issues';
+import Step15_Expectation from './components/Step15_Expectation';
+import Step16_Video from './components/Step16_Video';
+import Step17_Complete from './components/Step17_Complete';
+import ResultSummary from './components/ResultSummary';
+import WhitespaceMap from './components/WhitespaceMap';
+import ProposalCards from './components/ProposalCards';
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('modeSelect')
-  const [currentStep, setCurrentStep] = useState(1)
-  const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({})
+  const { user, isLoading, signInWithGoogle, signOut, error: authError } = useAuth();
+  const [screen, setScreen] = useState<Screen>('modeSelect');
+  const [currentStep, setCurrentStep] = useState(1);
+  const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({});
+
+  // 認証ロード中はスピナー表示
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500 text-sm">読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 管理者ログイン画面: 未ログイン時に表示
+  if (screen === 'adminLogin' && !user) {
+    return (
+      <AuthLogin
+        onSignIn={signInWithGoogle}
+        error={authError}
+        isLoading={isLoading}
+      />
+    );
+  }
+
+  // OAuth リダイレクト後: ログイン済みなら自動でダッシュボードへ
+  useEffect(() => {
+    if (user && screen === 'adminLogin') {
+      setScreen('adminDashboard');
+    }
+  }, [user, screen]);
 
   const handleNext = (stepData: Partial<SurveyData>) => {
-    const newData = { ...surveyData, ...stepData }
-    setSurveyData(newData)
+    const newData = { ...surveyData, ...stepData };
+    setSurveyData(newData);
     if (currentStep < 17) {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     }
-  }
+  };
 
   const handleBack = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+      setCurrentStep(currentStep - 1);
     } else {
-      setScreen('modeSelect')
+      setScreen('modeSelect');
     }
-  }
+  };
 
   const handleRestart = () => {
-    setScreen('modeSelect')
-    setCurrentStep(1)
-    setSurveyData({})
-  }
+    setScreen('modeSelect');
+    setCurrentStep(1);
+    setSurveyData({});
+  };
 
   // モード選択画面
   if (screen === 'modeSelect') {
     return (
-      <ModeSelect
-        onStartSurvey={() => setScreen('survey')}
-        onAdminLogin={() => setScreen('adminLogin')}
-      />
-    )
-  }
-
-  // 管理者ログイン画面
-  if (screen === 'adminLogin') {
-    return (
-      <AdminLogin
-        onSuccess={() => setScreen('adminDashboard')}
-        onBack={() => setScreen('modeSelect')}
-      />
-    )
+      <>
+        {/* ヘッダー */}
+        <header style={{ background: 'linear-gradient(135deg, #1E4D8C 0%, #2563EB 100%)' }}
+          className="text-white px-4 py-3">
+          <h1 className="text-lg font-bold">スイテック ITアンケート</h1>
+          <p className="text-xs opacity-75">創業40周年記念</p>
+        </header>
+        <ModeSelect
+          onStartSurvey={() => setScreen('survey')}
+          onAdminLogin={() => setScreen(user ? 'adminDashboard' : 'adminLogin')}
+        />
+      </>
+    );
   }
 
   // 管理者ダッシュボード
-  if (screen === 'adminDashboard') {
+  if (screen === 'adminDashboard' && user) {
     return (
-      <AdminDashboard
-        onLogout={() => setScreen('modeSelect')}
-      />
-    )
+      <>
+        {/* ヘッダー */}
+        <header style={{ background: 'linear-gradient(135deg, #1E4D8C 0%, #2563EB 100%)' }}
+          className="text-white px-4 py-3 flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-bold">スイテック ITアンケート</h1>
+            <p className="text-xs opacity-75">創業40周年記念</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs opacity-75">{user.name}</span>
+            <button
+              onClick={signOut}
+              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full transition-colors"
+            >
+              ログアウト
+            </button>
+          </div>
+        </header>
+        <AdminDashboard
+          user={user}
+          onBack={() => setScreen('modeSelect')}
+        />
+      </>
+    );
   }
 
   // 結果サマリー
@@ -89,7 +139,7 @@ export default function App() {
         onNext={() => setScreen('whitespaceMap')}
         onBack={() => setScreen('survey')}
       />
-    )
+    );
   }
 
   // ホワイトスペースマップ
@@ -100,7 +150,7 @@ export default function App() {
         onNext={() => setScreen('proposalCards')}
         onBack={() => setScreen('resultSummary')}
       />
-    )
+    );
   }
 
   // ご提案内容
@@ -110,7 +160,7 @@ export default function App() {
         surveyData={surveyData}
         onRestart={handleRestart}
       />
-    )
+    );
   }
 
   // アンケート画面
@@ -169,5 +219,5 @@ export default function App() {
         </div>
       </main>
     </div>
-  )
+  );
 }
