@@ -44,8 +44,8 @@ export default function App() {
     );
   }
 
-  // 管理者ログイン画面: 未ログイン時に表示
-  if (screen === 'adminLogin' && !user) {
+  // 未ログイン時は必ずGWSログイン画面を表示（アンケート回答者も含む全員）
+  if (!user) {
     return (
       <AuthLogin
         onSignIn={signInWithGoogle}
@@ -54,13 +54,6 @@ export default function App() {
       />
     );
   }
-
-  // OAuth リダイレクト後: ログイン済みなら自動でダッシュボードへ
-  useEffect(() => {
-    if (user && screen === 'adminLogin') {
-      setScreen('adminDashboard');
-    }
-  }, [user, screen]);
 
   const handleNext = (stepData: Partial<SurveyData>) => {
     const newData = { ...surveyData, ...stepData };
@@ -90,13 +83,24 @@ export default function App() {
       <>
         {/* ヘッダー */}
         <header style={{ background: 'linear-gradient(135deg, #1E4D8C 0%, #2563EB 100%)' }}
-          className="text-white px-4 py-3">
-          <h1 className="text-lg font-bold">スイテック ITアンケート</h1>
-          <p className="text-xs opacity-75">創業40周年記念</p>
+          className="text-white px-4 py-3 flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-bold">スイテック ITアンケート</h1>
+            <p className="text-xs opacity-75">創業40周年記念</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs opacity-75">{user.name}</span>
+            <button
+              onClick={signOut}
+              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full transition-colors text-gray-800 font-medium"
+            >
+              ログアウト
+            </button>
+          </div>
         </header>
         <ModeSelect
           onStartSurvey={() => setScreen('survey')}
-          onAdminLogin={() => setScreen(user ? 'adminDashboard' : 'adminLogin')}
+          onAdminLogin={() => setScreen('adminDashboard')}
         />
       </>
     );
@@ -117,7 +121,7 @@ export default function App() {
             <span className="text-xs opacity-75">{user.name}</span>
             <button
               onClick={signOut}
-              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full transition-colors"
+              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full transition-colors text-gray-800 font-medium"
             >
               ログアウト
             </button>
@@ -174,15 +178,21 @@ export default function App() {
             <div className="text-white font-bold text-base leading-tight">スイテック ITアンケート</div>
             <div className="text-blue-200 text-xs">創業40周年記念</div>
           </div>
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2">
             <span className="text-xs px-2 py-1 rounded-full font-medium bg-amber-400 text-amber-900">
               💼 同行
             </span>
             <button
               onClick={handleRestart}
-              className="text-white text-sm hover:text-blue-200 transition-colors flex items-center gap-1"
+              className="text-white text-xs hover:text-blue-200 transition-colors"
             >
               🏠 ホーム
+            </button>
+            <button
+              onClick={signOut}
+              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-2 py-1 rounded-full transition-colors text-gray-800 font-medium"
+            >
+              ログアウト
             </button>
           </div>
         </div>
