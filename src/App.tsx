@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from './hooks/useAuth';
+import { supabase } from './lib/supabase';
+import { calcWhitespace } from './utils/whitespace';
 import type { SurveyData, Screen } from './types/survey';
 import ModeSelect from './components/ModeSelect';
 import AuthLogin from './components/AuthLogin';
-import AdminDashboard from './components/AdminDashboard';
+import AdminDashboard from './components/admin/AdminDashboard';
 import StepIndicator from './components/StepIndicator';
 import Step01_BasicInfo from './components/Step01_BasicInfo';
 import Step02_PC from './components/Step02_PC';
@@ -55,9 +57,47 @@ export default function App() {
     );
   }
 
-  const handleNext = (stepData: Partial<SurveyData>) => {
+  const handleNext = async (stepData: Partial<SurveyData>) => {
     const newData = { ...surveyData, ...stepData };
     setSurveyData(newData);
+
+    // Step16からStep17（完了画面）へ進む前にSupabaseに保存
+    if (currentStep === 16 && user) {
+      try {
+        // ホワイトスペース計算
+        const whitespace = calcWhitespace(newData);
+
+        // Supabaseに保存
+        const { error } = await supabase
+          .from('survey_responses')
+          .insert({
+            sales_email: user.email,
+            sales_name: user.name,
+            company_name: newData.companyName || '',
+            company_name_kana: newData.companyName || '',
+            industry: newData.industry || '',
+            company_size: newData.employeeSize || '',
+            contact_name: newData.contactName || '',
+            contact_email: newData.email || '',
+            answers: newData,
+            whitespace: whitespace,
+            gift_issued: false,
+          });
+
+        if (error) {
+          console.error('保存エラー:', error);
+          alert('データの保存に失敗しました。もう一度お試しください。');
+          return;
+        }
+
+        console.log('✅ アンケートデータをSupabaseに保存しました');
+      } catch (error) {
+        console.error('保存処理エラー:', error);
+        alert('データの保存に失敗しました。もう一度お試しください。');
+        return;
+      }
+    }
+
     if (currentStep < 17) {
       setCurrentStep(currentStep + 1);
     }
@@ -109,29 +149,11 @@ export default function App() {
   // 管理者ダッシュボード
   if (screen === 'adminDashboard' && user) {
     return (
-      <>
-        {/* ヘッダー */}
-        <header style={{ background: 'linear-gradient(135deg, #1E4D8C 0%, #2563EB 100%)' }}
-          className="text-white px-4 py-3 flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-bold">スイテック ITアンケート</h1>
-            <p className="text-xs opacity-75">創業40周年記念</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs opacity-75">{user.name}</span>
-            <button
-              onClick={signOut}
-              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full transition-colors text-gray-800 font-medium"
-            >
-              ログアウト
-            </button>
-          </div>
-        </header>
-        <AdminDashboard
-          user={user}
-          onBack={() => setScreen('modeSelect')}
-        />
-      </>
+      <AdminDashboard
+        user={user}
+        onBack={() => setScreen('modeSelect')}
+        onSignOut={signOut}
+      />
     );
   }
 
