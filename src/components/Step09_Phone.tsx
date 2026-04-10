@@ -28,11 +28,8 @@ export default function Step09_Phone({ data, onNext, onBack }: Props) {
     phoneVendorOther: data.phoneVendorOther || ''
   })
 
-  const canNext = formData.phoneEnv && formData.phoneVendor &&
-                  (formData.phoneVendor !== 'other' || formData.phoneVendorOther.trim())
-
   const handleNext = () => {
-    if (canNext) onNext(formData)
+    onNext(formData)
   }
 
   return (
@@ -114,9 +111,8 @@ export default function Step09_Phone({ data, onNext, onBack }: Props) {
         </button>
         <button
           onClick={handleNext}
-          disabled={!canNext}
-          className="flex-1 py-3 rounded-lg font-bold text-white transition-all disabled:bg-gray-300 disabled:cursor-not-allowed"
-          style={{ background: canNext ? '#1E4D8C' : undefined }}
+          className="flex-1 py-3 rounded-lg font-bold text-white transition-all"
+          style={{ background: '#1E4D8C' }}
         >
           次へ →
         </button>

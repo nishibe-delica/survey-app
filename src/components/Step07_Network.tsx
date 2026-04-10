@@ -29,11 +29,8 @@ export default function Step07_Network({ data, onNext, onBack }: Props) {
     setFormData({ ...formData, networkTypes: newTypes })
   }
 
-  const canNext = formData.networkTypes.length > 0 && formData.networkVendor &&
-                  (formData.networkVendor !== 'other' || formData.networkVendorOther.trim())
-
   const handleNext = () => {
-    if (canNext) onNext(formData)
+    onNext(formData)
   }
 
   return (
@@ -115,9 +112,8 @@ export default function Step07_Network({ data, onNext, onBack }: Props) {
         </button>
         <button
           onClick={handleNext}
-          disabled={!canNext}
-          className="flex-1 py-3 rounded-lg font-bold text-white transition-all disabled:bg-gray-300 disabled:cursor-not-allowed"
-          style={{ background: canNext ? '#1E4D8C' : undefined }}
+          className="flex-1 py-3 rounded-lg font-bold text-white transition-all"
+          style={{ background: '#1E4D8C' }}
         >
           次へ →
         </button>
