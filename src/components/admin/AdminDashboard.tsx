@@ -52,7 +52,7 @@ export default function AdminDashboard({ user, onBack, onSignOut }: AdminDashboa
               </div>
               <button
                 onClick={onSignOut}
-                className="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg text-white text-sm font-medium transition-colors"
+                className="px-4 py-2 bg-white hover:bg-gray-100 rounded-lg text-gray-900 text-sm font-medium transition-colors"
               >
                 ログアウト
               </button>

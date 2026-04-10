@@ -132,7 +132,7 @@ export default function App() {
             <span className="text-xs opacity-75">{user.name}</span>
             <button
               onClick={signOut}
-              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full transition-colors text-gray-800 font-medium"
+              className="text-xs bg-white hover:bg-gray-100 px-3 py-1 rounded-full transition-colors text-gray-900 font-medium"
             >
               ログアウト
             </button>
@@ -212,7 +212,7 @@ export default function App() {
             </button>
             <button
               onClick={signOut}
-              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-2 py-1 rounded-full transition-colors text-gray-800 font-medium"
+              className="text-xs bg-white hover:bg-gray-100 px-2 py-1 rounded-full transition-colors text-gray-900 font-medium"
             >
               ログアウト
             </button>

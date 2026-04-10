@@ -29,6 +29,10 @@ export default function AdminCustomerList({ onSelectCustomer }: AdminCustomerLis
   const [filterSales, setFilterSales] = useState('all');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
 
+  // 削除機能用
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [isDeleting, setIsDeleting] = useState(false);
+
   // 担当営業リスト（重複なし）
   const [salesList, setSalesList] = useState<string[]>([]);
 
@@ -127,6 +131,70 @@ export default function AdminCustomerList({ onSelectCustomer }: AdminCustomerLis
     setFilteredCustomers(filtered);
   }
 
+  // チェックボックス操作
+  function toggleSelection(customerId: string) {
+    const newSelected = new Set(selectedIds);
+    if (newSelected.has(customerId)) {
+      newSelected.delete(customerId);
+    } else {
+      newSelected.add(customerId);
+    }
+    setSelectedIds(newSelected);
+  }
+
+  function toggleSelectAll() {
+    if (selectedIds.size === filteredCustomers.length) {
+      // 全選択解除
+      setSelectedIds(new Set());
+    } else {
+      // 全選択
+      setSelectedIds(new Set(filteredCustomers.map(c => c.id)));
+    }
+  }
+
+  // 削除処理
+  async function handleDelete() {
+    if (selectedIds.size === 0) {
+      alert('削除する項目を選択してください');
+      return;
+    }
+
+    const count = selectedIds.size;
+    const confirmed = window.confirm(
+      `選択した${count}件のアンケート回答を削除します。\n\nこの操作は取り消せません。\n本当に削除しますか？`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setIsDeleting(true);
+
+      // Supabaseから削除
+      const idsArray = Array.from(selectedIds);
+      const { error } = await supabase
+        .from('survey_responses')
+        .delete()
+        .in('id', idsArray);
+
+      if (error) throw error;
+
+      console.log(`✅ ${count}件のアンケート回答を削除しました`);
+      alert(`${count}件のアンケート回答を削除しました`);
+
+      // 選択をクリア
+      setSelectedIds(new Set());
+
+      // データを再取得
+      await fetchCustomers();
+
+    } catch (error) {
+      console.error('削除エラー:', error);
+      alert('削除に失敗しました。もう一度お試しください。');
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
   function formatDate(dateString: string) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -206,11 +274,41 @@ export default function AdminCustomerList({ onSelectCustomer }: AdminCustomerLis
           </div>
         </div>
 
-        <div className="mt-3 text-sm text-gray-600">
-          検索結果: <span className="font-bold text-blue-600">{filteredCustomers.length}</span>件
-          {customers.length !== filteredCustomers.length && (
-            <span className="text-gray-500"> / 全{customers.length}件</span>
-          )}
+        <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
+          <div className="text-sm text-gray-600">
+            検索結果: <span className="font-bold text-blue-600">{filteredCustomers.length}</span>件
+            {customers.length !== filteredCustomers.length && (
+              <span className="text-gray-500"> / 全{customers.length}件</span>
+            )}
+            {selectedIds.size > 0 && (
+              <span className="ml-3 text-orange-600 font-medium">
+                {selectedIds.size}件選択中
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleSelectAll}
+              className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium"
+            >
+              {selectedIds.size === filteredCustomers.length && filteredCustomers.length > 0
+                ? '✓ 全選択解除'
+                : '☐ 全選択'}
+            </button>
+            {selectedIds.size > 0 && (
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className={`px-4 py-2 text-sm rounded-lg font-medium transition-colors ${
+                  isDeleting
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-red-600 hover:bg-red-700 text-white'
+                }`}
+              >
+                {isDeleting ? '削除中...' : `🗑️ 選択した${selectedIds.size}件を削除`}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -220,6 +318,7 @@ export default function AdminCustomerList({ onSelectCustomer }: AdminCustomerLis
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
+                <th className="text-center py-3 px-4 text-sm font-medium text-gray-700 w-12">選択</th>
                 <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">会社名</th>
                 <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">業種</th>
                 <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">従業員規模</th>
@@ -229,26 +328,63 @@ export default function AdminCustomerList({ onSelectCustomer }: AdminCustomerLis
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {filteredCustomers.map((customer) => (
-                <tr
-                  key={customer.id}
-                  onClick={() => onSelectCustomer(customer.id)}
-                  className="hover:bg-blue-50 cursor-pointer transition-colors"
-                >
-                  <td className="py-3 px-4">
-                    <div className="font-medium text-gray-800">{customer.companyName}</div>
-                  </td>
-                  <td className="py-3 px-4 text-sm text-gray-600">{customer.industry}</td>
-                  <td className="py-3 px-4 text-sm text-gray-600">{customer.employeeSize}</td>
-                  <td className="py-3 px-4 text-sm text-gray-600">{customer.salesName}</td>
-                  <td className="py-3 px-4 text-sm text-gray-600">{formatDate(customer.createdAt)}</td>
-                  <td className="py-3 px-4 text-center">
-                    <span className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-purple-100 text-purple-700 font-medium text-sm">
-                      {customer.whitespaceCount}件
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {filteredCustomers.map((customer) => {
+                const isSelected = selectedIds.has(customer.id);
+                return (
+                  <tr
+                    key={customer.id}
+                    className={`hover:bg-blue-50 transition-colors ${isSelected ? 'bg-blue-50' : ''}`}
+                  >
+                    <td className="py-3 px-4 text-center">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => toggleSelection(customer.id)}
+                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </td>
+                    <td
+                      className="py-3 px-4 cursor-pointer"
+                      onClick={() => onSelectCustomer(customer.id)}
+                    >
+                      <div className="font-medium text-gray-800">{customer.companyName}</div>
+                    </td>
+                    <td
+                      className="py-3 px-4 text-sm text-gray-600 cursor-pointer"
+                      onClick={() => onSelectCustomer(customer.id)}
+                    >
+                      {customer.industry}
+                    </td>
+                    <td
+                      className="py-3 px-4 text-sm text-gray-600 cursor-pointer"
+                      onClick={() => onSelectCustomer(customer.id)}
+                    >
+                      {customer.employeeSize}
+                    </td>
+                    <td
+                      className="py-3 px-4 text-sm text-gray-600 cursor-pointer"
+                      onClick={() => onSelectCustomer(customer.id)}
+                    >
+                      {customer.salesName}
+                    </td>
+                    <td
+                      className="py-3 px-4 text-sm text-gray-600 cursor-pointer"
+                      onClick={() => onSelectCustomer(customer.id)}
+                    >
+                      {formatDate(customer.createdAt)}
+                    </td>
+                    <td
+                      className="py-3 px-4 text-center cursor-pointer"
+                      onClick={() => onSelectCustomer(customer.id)}
+                    >
+                      <span className="inline-flex items-center justify-center px-3 py-1 rounded-full bg-purple-100 text-purple-700 font-medium text-sm">
+                        {customer.whitespaceCount}件
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -256,28 +392,44 @@ export default function AdminCustomerList({ onSelectCustomer }: AdminCustomerLis
 
       {/* お客様一覧（スマホ表示：カード） */}
       <div className="md:hidden space-y-3">
-        {filteredCustomers.map((customer) => (
-          <div
-            key={customer.id}
-            onClick={() => onSelectCustomer(customer.id)}
-            className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer"
-          >
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1">
-                <div className="font-bold text-gray-800 text-lg mb-1">{customer.companyName}</div>
-                <div className="text-sm text-gray-600">
-                  {customer.industry} / {customer.employeeSize}
+        {filteredCustomers.map((customer) => {
+          const isSelected = selectedIds.has(customer.id);
+          return (
+            <div
+              key={customer.id}
+              className={`bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
+            >
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => toggleSelection(customer.id)}
+                  className="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div
+                  className="flex-1 cursor-pointer"
+                  onClick={() => onSelectCustomer(customer.id)}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <div className="font-bold text-gray-800 text-lg mb-1">{customer.companyName}</div>
+                      <div className="text-sm text-gray-600">
+                        {customer.industry} / {customer.employeeSize}
+                      </div>
+                    </div>
+                    <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 font-medium text-sm whitespace-nowrap ml-2">
+                      {customer.whitespaceCount}件
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-500 mt-2">
+                    担当: {customer.salesName} | {formatDate(customer.createdAt)}
+                  </div>
                 </div>
               </div>
-              <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 font-medium text-sm whitespace-nowrap ml-2">
-                {customer.whitespaceCount}件
-              </span>
             </div>
-            <div className="text-sm text-gray-500 mt-2">
-              担当: {customer.salesName} | {formatDate(customer.createdAt)}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {filteredCustomers.length === 0 && (
