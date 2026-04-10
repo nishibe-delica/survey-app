@@ -20,8 +20,7 @@ export default function ModeSelect({ onStartSurvey, onAdminLogin }: Props) {
         >
           <span className="text-5xl group-hover:scale-110 transition-transform">🤝</span>
           <div className="text-center">
-            <div className="font-bold text-white text-xl">営業同行モードで始める</div>
-            <div className="text-blue-200 text-sm mt-2">担当営業と一緒に回答します</div>
+            <div className="font-bold text-white text-2xl">アンケート開始</div>
           </div>
         </button>
       </div>
